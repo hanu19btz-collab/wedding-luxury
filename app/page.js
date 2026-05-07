@@ -4,7 +4,24 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
 
-  const weddingDate = new Date("2026-09-19T16:00:00").getTime();
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
+
+  }, []);
+
+  const weddingDate = new Date(
+    "2026-09-19T16:00:00"
+  ).getTime();
 
   const [timeLeft, setTimeLeft] = useState({
     days: "000",
@@ -18,9 +35,13 @@ export default function Home() {
     const interval = setInterval(() => {
 
       const now = new Date().getTime();
+
       const distance = weddingDate - now;
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const days = Math.floor(
+        distance / (1000 * 60 * 60 * 24)
+      );
+
       const hours = Math.floor(
         (distance % (1000 * 60 * 60 * 24)) /
         (1000 * 60 * 60)
@@ -48,20 +69,29 @@ export default function Home() {
 
   }, []);
 
+  const envelopeOpacity =
+    1 - Math.min(scrollY / 500, 1);
+
   return (
 
     <main className="main">
 
       {/* HERO */}
-      <section className="hero">
+
+      <section
+        className="hero"
+        style={{
+          opacity: envelopeOpacity,
+        }}
+      >
 
         <div className="envelope">
 
           <div className="lid"></div>
 
-          <div className="letter">
+          <div className="letter-preview">
 
-            <p className="date">
+            <p className="preview-date">
               19 SEPTEMBRIE 2026
             </p>
 
@@ -78,6 +108,7 @@ export default function Home() {
       </section>
 
       {/* INVITATION */}
+
       <section className="invitation-wrapper">
 
         <img
@@ -86,6 +117,7 @@ export default function Home() {
         />
 
         {/* COUNTDOWN */}
+
         <div className="countdown">
 
           <div>
