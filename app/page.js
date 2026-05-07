@@ -4,92 +4,61 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
 
-  const [scrollY, setScrollY] = useState(0);
+  const [scroll, setScroll] = useState(0);
 
   useEffect(() => {
 
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      setScroll(window.scrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
 
     return () =>
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll
+      );
 
   }, []);
 
-  const weddingDate = new Date(
-    "2026-09-19T16:00:00"
-  ).getTime();
+  const progress = Math.min(scroll / 700, 1);
 
-  const [timeLeft, setTimeLeft] = useState({
-    days: "000",
-    hours: "00",
-    minutes: "00",
-    seconds: "00",
-  });
+  const lidRotation = progress * -180;
 
-  useEffect(() => {
+  const letterMove = progress * -260;
 
-    const interval = setInterval(() => {
-
-      const now = new Date().getTime();
-
-      const distance = weddingDate - now;
-
-      const days = Math.floor(
-        distance / (1000 * 60 * 60 * 24)
-      );
-
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) /
-        (1000 * 60 * 60)
-      );
-
-      const minutes = Math.floor(
-        (distance % (1000 * 60 * 60)) /
-        (1000 * 60)
-      );
-
-      const seconds = Math.floor(
-        (distance % (1000 * 60)) / 1000
-      );
-
-      setTimeLeft({
-        days: String(days).padStart(3, "0"),
-        hours: String(hours).padStart(2, "0"),
-        minutes: String(minutes).padStart(2, "0"),
-        seconds: String(seconds).padStart(2, "0"),
-      });
-
-    }, 1000);
-
-    return () => clearInterval(interval);
-
-  }, []);
-
-  const envelopeOpacity =
-    1 - Math.min(scrollY / 500, 1);
+  const heroOpacity =
+    1 - Math.max((scroll - 350) / 350, 0);
 
   return (
 
     <main className="main">
+
+      {/* SPACER */}
+
+      <div className="scroll-space"></div>
 
       {/* HERO */}
 
       <section
         className="hero"
         style={{
-          opacity: envelopeOpacity,
+          opacity: heroOpacity,
         }}
       >
 
         <div className="envelope">
 
-          <div className="lid"></div>
+          {/* LETTER */}
 
-          <div className="letter-preview">
+          <div
+            className="letter-preview"
+            style={{
+              transform:
+                `translateY(${letterMove}px)`,
+            }}
+          >
 
             <p className="preview-date">
               19 SEPTEMBRIE 2026
@@ -103,6 +72,16 @@ export default function Home() {
 
           </div>
 
+          {/* LID */}
+
+          <div
+            className="lid"
+            style={{
+              transform:
+                `rotateX(${lidRotation}deg)`,
+            }}
+          ></div>
+
         </div>
 
       </section>
@@ -115,32 +94,6 @@ export default function Home() {
           src="/invitation-final.png"
           className="invitation"
         />
-
-        {/* COUNTDOWN */}
-
-        <div className="countdown">
-
-          <div>
-            <span>{timeLeft.days}</span>
-            <p>ZILE</p>
-          </div>
-
-          <div>
-            <span>{timeLeft.hours}</span>
-            <p>ORE</p>
-          </div>
-
-          <div>
-            <span>{timeLeft.minutes}</span>
-            <p>MIN</p>
-          </div>
-
-          <div>
-            <span>{timeLeft.seconds}</span>
-            <p>SEC</p>
-          </div>
-
-        </div>
 
       </section>
 
