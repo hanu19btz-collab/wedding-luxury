@@ -1,127 +1,297 @@
 "use client";
 
-import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { useEffect, useState } from "react";
 
-export default function WeddingInvitationFinal() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
+export default function Home() {
+  const targetDate = new Date("2026-09-19T16:00:00").getTime();
+
+  const [timeLeft, setTimeLeft] = useState({
+    days: "000",
+    hours: "00",
+    minutes: "00",
+    seconds: "00",
   });
 
-  const smoothScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
 
-  // ANIMAȚII ELEMENTE
-  const flapRotation = useTransform(smoothScroll, [0, 0.1], [0, -160]);
-  const invitationY = useTransform(smoothScroll, [0.1, 0.35], [0, -600]);
-  const flowersOpacity = useTransform(smoothScroll, [0.3, 0.45], [0, 1]);
-  const flowersScale = useTransform(smoothScroll, [0.3, 0.5], [0.8, 1]);
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60)
+      );
+      const minutes = Math.floor(
+        (distance % (1000 * 60 * 60)) /
+          (1000 * 60)
+      );
+      const seconds = Math.floor(
+        (distance % (1000 * 60)) / 1000
+      );
+
+      setTimeLeft({
+        days: String(days).padStart(3, "0"),
+        hours: String(hours).padStart(2, "0"),
+        minutes: String(minutes).padStart(2, "0"),
+        seconds: String(seconds).padStart(2, "0"),
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <main ref={containerRef} className="h-[700vh] bg-[#fdfbf7] relative overflow-x-hidden">
-      
-      {/* 1. TEXTURA DE HÂRTIE (Peste tot) */}
-      <div className="fixed inset-0 pointer-events-none z-[100] opacity-30 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
+    <main className="bg-[#f7f2ed] overflow-x-hidden">
 
-      {/* 2. PLICUL (Fundal și Capac) */}
-      <motion.div style={{ opacity: useTransform(smoothScroll, [0.4, 0.5], [1, 0]) }} className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
-        <div className="relative w-full max-w-[420px] h-[300px] bg-[#800020] shadow-2xl">
-          <motion.div 
-            style={{ rotateX: flapRotation, transformOrigin: "top", perspective: "1000px" }}
-            className="absolute top-0 left-0 w-full h-full bg-[#6b001a] z-[60] origin-top border-t border-white/10"
-            style={{ clipPath: "polygon(0 0, 50% 50%, 100% 0)" }} // Forma de V a capacului
-          />
-          <div className="absolute inset-0 bg-[#800020] z-10" />
+      {/* HERO ENVELOPE */}
+      <section className="hero-section">
+        <div className="envelope-wrapper">
+          <div className="envelope">
+            <div className="envelope-lid"></div>
+
+            <div className="letter">
+              <p className="date">
+                19 SEPTEMBRIE 2026
+              </p>
+
+              <h1>
+                Diana
+                <br />
+                &
+                <br />
+                Ciprian
+              </h1>
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </section>
 
-      {/* 3. INVITAȚIA (Hârtia cu elementele grafice) */}
-      <motion.div 
-        style={{ y: invitationY, scale: useTransform(smoothScroll, [0.3, 0.4], [0.9, 1]) }}
-        className="fixed inset-0 z-40 flex flex-col items-center justify-start pt-20 px-4"
-      >
-        <div className="w-full max-w-[380px] bg-[#fffdfa] shadow-2xl relative min-h-[700px] pb-20">
-          
-          {/* MONOGRAMA D&C (Sus) */}
-          <div className="pt-10 flex justify-center opacity-80">
-            <img src="/monograma-floral.png" alt="D&C" className="w-32 h-auto" /> 
-            {/* ^ Aici pui imaginea cu cercul de flori din poza ta */}
-          </div>
+      {/* IMAGINI */}
+      <section className="image-section">
+        <img src="/hero.png" alt="" />
+      </section>
 
-          {/* TEXTUL TĂU (Fonturi cursive și serif) */}
-          <div className="px-8 text-center mt-6 space-y-4">
-            <p className="uppercase tracking-[0.3em] text-[10px] text-gray-400">Și astfel începe pentru totdeauna</p>
-            <h1 className="text-5xl font-serif text-[#800020] py-4 italic">Diana & Ciprian</h1>
-            
-            <div className="text-[11px] leading-relaxed uppercase tracking-wider text-gray-600 border-t border-gray-100 pt-6">
-              <p>Alături de mamele noastre</p>
-              <p>Și purtând în inimă pe cei care ne lipsesc,</p>
-              
-              <div className="flex justify-between py-6 italic normal-case text-base text-gray-800 font-serif">
-                <div className="flex-1 border-r border-gray-100">
-                  Elena și Mugurel 🕊️ <br/> <span className="text-[9px] font-bold uppercase not-italic tracking-tighter">OLTEANU</span>
-                </div>
-                <div className="flex-1">
-                  Elena și Constantin 🕊️ <br/> <span className="text-[9px] font-bold uppercase not-italic tracking-tighter">ONODEA</span>
-                </div>
-              </div>
+      <section className="image-section">
+        <img src="/parents.png" alt="" />
+      </section>
 
-              <div className="py-4">
-                <p className="text-[10px] lowercase italic mb-1">Și de nașii noștri dragi,</p>
-                <p className="text-xl font-serif italic normal-case text-gray-900">Lavinia și Dănuț Marian</p>
-              </div>
+      <section className="image-section">
+        <img src="/timeline.png" alt="" />
+      </section>
 
-              <p className="pt-4 text-[10px]">Vă invităm să ne fiți alături la celebrarea căsătoriei noastre</p>
+      <section className="image-section">
+        <img src="/rsvp.png" alt="" />
+      </section>
+
+      {/* COUNTDOWN */}
+      <section className="countdown-wrapper">
+
+        <img
+          src="/countdown.png"
+          alt=""
+          className="countdown-image"
+        />
+
+        <div className="countdown-overlay">
+
+          <div className="timer">
+            <div>
+              <span>{timeLeft.days}</span>
+              <p>ZILE</p>
             </div>
 
-            <div className="py-10 text-3xl font-serif text-[#800020] italic border-b border-gray-100">
-              19 Septembrie 2026
+            <div>
+              <span>{timeLeft.hours}</span>
+              <p>ORE</p>
+            </div>
+
+            <div>
+              <span>{timeLeft.minutes}</span>
+              <p>MIN</p>
+            </div>
+
+            <div>
+              <span>{timeLeft.seconds}</span>
+              <p>SEC</p>
             </div>
           </div>
 
-          {/* 4. ELEMENTELE GRAFICE (Florile care apar la scroll) */}
-          <motion.div 
-            style={{ opacity: flowersOpacity, scale: flowersScale }}
-            className="absolute -bottom-10 -right-10 w-64 h-64 z-50 pointer-events-none"
-          >
-            <img src="/orhidee.png" alt="Flori" className="w-full h-full object-contain" />
-            {/* ^ Aici pui imaginea cu orhideele mov din video */}
-          </motion.div>
         </div>
-      </motion.div>
+      </section>
 
-      {/* 5. PROGRAMUL (Timeline vertical ca în video) */}
-      <div className="absolute top-[350vh] w-full flex flex-col items-center px-10 space-y-20 pb-40">
-          <div className="w-full max-w-sm space-y-16 relative">
-            <div className="absolute left-4 top-0 bottom-0 w-[1px] bg-[#800020]/20" />
-            
-            <div className="relative pl-12">
-              <div className="absolute left-[11px] top-1 w-2 h-2 rounded-full bg-[#800020]" />
-              <p className="text-[10px] uppercase tracking-widest text-[#800020] font-bold">16:00 Cununia Civilă</p>
-              <p className="text-gray-500 text-sm italic font-serif">Casa Căsătoriilor, Mangalia</p>
-            </div>
+      <style jsx>{`
+        main {
+          min-height: 100vh;
+        }
 
-            <div className="relative pl-12">
-              <div className="absolute left-[11px] top-1 w-2 h-2 rounded-full bg-[#800020]" />
-              <p className="text-[10px] uppercase tracking-widest text-[#800020] font-bold">17:00 Cununia Religioasă</p>
-              <p className="text-gray-500 text-sm italic font-serif">Biserica "Sf. Gheorghe", Mangalia</p>
-            </div>
+        .hero-section {
+          height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #f7f2ed;
+          position: sticky;
+          top: 0;
+          z-index: 20;
+        }
 
-            <div className="relative pl-12">
-              <div className="absolute left-[11px] top-1 w-2 h-2 rounded-full bg-[#800020]" />
-              <p className="text-[10px] uppercase tracking-widest text-[#800020] font-bold">19:30 Petrecerea</p>
-              <p className="text-gray-500 text-sm italic font-serif">Restaurant Atena, Saturn</p>
-            </div>
-          </div>
+        .envelope-wrapper {
+          perspective: 1200px;
+        }
 
-          <div className="text-center space-y-6 pt-20">
-             <p className="font-serif text-2xl italic">Vă așteptăm cu drag!</p>
-             <button className="bg-[#800020] text-white px-10 py-4 text-[10px] tracking-[0.3em] uppercase">
-                Confirmă pe WhatsApp
-             </button>
-          </div>
-      </div>
+        .envelope {
+          width: 340px;
+          height: 230px;
+          position: relative;
+          background: #7d1d2a;
+          box-shadow:
+            0 30px 60px rgba(0,0,0,0.25);
+        }
+
+        .envelope-lid {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: #962838;
+
+          clip-path: polygon(
+            0 0,
+            50% 100%,
+            100% 0
+          );
+
+          transform-origin: top;
+          animation: openLid 2s ease forwards;
+          z-index: 4;
+        }
+
+        .letter {
+          position: absolute;
+          width: 88%;
+          height: 88%;
+          background: white;
+          left: 6%;
+          top: 6%;
+          z-index: 2;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+
+          animation:
+            pullLetter 2.5s ease forwards;
+
+          box-shadow:
+            0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .date {
+          letter-spacing: 4px;
+          font-size: 11px;
+          color: #8b7d73;
+          margin-bottom: 20px;
+        }
+
+        h1 {
+          font-size: 54px;
+          line-height: 1;
+          text-align: center;
+          color: #5b1621;
+          font-family: serif;
+          font-style: italic;
+        }
+
+        @keyframes openLid {
+          to {
+            transform: rotateX(180deg);
+          }
+        }
+
+        @keyframes pullLetter {
+          0% {
+            transform: translateY(0);
+          }
+
+          100% {
+            transform: translateY(-120px);
+          }
+        }
+
+        .image-section {
+          position: relative;
+          z-index: 5;
+          background: #f7f2ed;
+        }
+
+        .image-section img {
+          width: 100%;
+          display: block;
+        }
+
+        .countdown-wrapper {
+          position: relative;
+        }
+
+        .countdown-image {
+          width: 100%;
+          display: block;
+        }
+
+        .countdown-overlay {
+          position: absolute;
+          top: 34%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+        }
+
+        .timer {
+          display: flex;
+          justify-content: center;
+          gap: 22px;
+        }
+
+        .timer div {
+          text-align: center;
+        }
+
+        .timer span {
+          font-size: 58px;
+          color: #651421;
+          font-family: serif;
+          font-style: italic;
+        }
+
+        .timer p {
+          margin-top: 10px;
+          font-size: 11px;
+          letter-spacing: 3px;
+          color: #8d7a6f;
+        }
+
+        @media (max-width: 768px) {
+          .envelope {
+            width: 300px;
+            height: 210px;
+          }
+
+          h1 {
+            font-size: 46px;
+          }
+
+          .timer {
+            gap: 14px;
+          }
+
+          .timer span {
+            font-size: 42px;
+          }
+        }
+      `}</style>
     </main>
   );
 }
