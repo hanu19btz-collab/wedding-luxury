@@ -3,124 +3,125 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
-// IMPORTĂM FONTURILE SPECIFICE (Trebuie configurate în layout.tsx)
-// Exemplu clase Tailwind pentru fonturi: font-greatvibes, font-playfair, font-lato
-
-export default function WeddingInvitationReplica() {
+export default function WeddingInvitationFinal() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Mișcare fluidă (Smooth Scroll)
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+  const smoothScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  // ANIMAȚII (Replica fidelă a video-ului)
-  const flapRotation = useTransform(smoothProgress, [0, 0.15], [0, -170]); // Deschidere capac
-  const invitationY = useTransform(smoothProgress, [0.15, 0.45], [0, -680]); // Invitația iese
-  const invitationScale = useTransform(smoothProgress, [0.4, 0.55], [0.95, 1]); // Zoom invitație
-  const envelopeOpacity = useTransform(smoothProgress, [0.5, 0.6], [1, 0]); // Plicul dispare
+  // ANIMAȚII ELEMENTE
+  const flapRotation = useTransform(smoothScroll, [0, 0.1], [0, -160]);
+  const invitationY = useTransform(smoothScroll, [0.1, 0.35], [0, -600]);
+  const flowersOpacity = useTransform(smoothScroll, [0.3, 0.45], [0, 1]);
+  const flowersScale = useTransform(smoothScroll, [0.3, 0.5], [0.8, 1]);
 
   return (
-    <main ref={containerRef} className="h-[600vh] bg-[#f8f5f0] relative overflow-x-hidden">
+    <main ref={containerRef} className="h-[700vh] bg-[#fdfbf7] relative overflow-x-hidden">
       
-      {/* TEXTURĂ GENERALĂ PAPER-FEEL (Fixă, peste tot) */}
-      <div className="fixed inset-0 pointer-events-none z-[100] opacity-[0.05] bg-[url('/textura_hirtie_generala.jpg')] bg-repeat" />
+      {/* 1. TEXTURA DE HÂRTIE (Peste tot) */}
+      <div className="fixed inset-0 pointer-events-none z-[100] opacity-30 bg-[url('https://www.transparenttextures.com/patterns/natural-paper.png')]" />
 
-      {/* --- LAYER: PLICUL (FOLOSEȘTE IMAGINILE DIN VIDEO) --- */}
-      <motion.div 
-        style={{ opacity: envelopeOpacity }}
-        className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none p-4"
-      >
-        <div className="relative w-full max-w-[420px] h-[300px] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]">
-          
-          {/* Imagine Fundal Interior Plic */}
-          <div className="absolute inset-0 bg-[url('/plic_interior.jpg')] bg-cover bg-center z-10" />
-
-          {/* CAPACUL PLICULUI (Animație 3D) */}
+      {/* 2. PLICUL (Fundal și Capac) */}
+      <motion.div style={{ opacity: useTransform(smoothScroll, [0.4, 0.5], [1, 0]) }} className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+        <div className="relative w-full max-w-[420px] h-[300px] bg-[#800020] shadow-2xl">
           <motion.div 
-            style={{ 
-                rotateX: flapRotation, 
-                transformOrigin: "top",
-                perspective: "1000px",
-                zIndex: 40 
-            }}
-            className="absolute top-0 left-0 w-full h-full bg-[url('/plic_exterior.jpg')] bg-cover bg-center origin-top drop-shadow-xl"
+            style={{ rotateX: flapRotation, transformOrigin: "top", perspective: "1000px" }}
+            className="absolute top-0 left-0 w-full h-full bg-[#6b001a] z-[60] origin-top border-t border-white/10"
+            style={{ clipPath: "polygon(0 0, 50% 50%, 100% 0)" }} // Forma de V a capacului
           />
-          
-          {/* Imagine Față Plic (V-ul din față) */}
-          <div className="absolute bottom-0 left-0 w-full h-full bg-[url('/plic_front_face.png')] bg-cover bg-center z-30" />
+          <div className="absolute inset-0 bg-[#800020] z-10" />
         </div>
       </motion.div>
 
-      {/* --- LAYER: INVITAȚIA (TEXTUL TĂU PE FUNDALUL DIN VIDEO) --- */}
+      {/* 3. INVITAȚIA (Hârtia cu elementele grafice) */}
       <motion.div 
-        style={{ y: invitationY, scale: invitationScale }}
-        className="fixed inset-0 z-[35] flex flex-col items-center justify-start pt-32 px-6"
+        style={{ y: invitationY, scale: useTransform(smoothScroll, [0.3, 0.4], [0.9, 1]) }}
+        className="fixed inset-0 z-40 flex flex-col items-center justify-start pt-20 px-4"
       >
-        {/* Container Hârtie cu Textura și Marginile din Video */}
-        <div className="w-full max-w-[380px] h-[600px] bg-[url('/invitatie_textura.jpg')] bg-cover bg-center shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative">
+        <div className="w-full max-w-[380px] bg-[#fffdfa] shadow-2xl relative min-h-[700px] pb-20">
           
-          {/* Monograma Florală D&C din video (Repoziționată) */}
-          <div className="absolute top-10 left-1/2 -translate-x-1/2">
-             <img src="/monograma_dc.png" alt="Monograma D&C" className="h-16 w-auto" />
+          {/* MONOGRAMA D&C (Sus) */}
+          <div className="pt-10 flex justify-center opacity-80">
+            <img src="/monograma-floral.png" alt="D&C" className="w-32 h-auto" /> 
+            {/* ^ Aici pui imaginea cu cercul de flori din poza ta */}
           </div>
 
-          {/* Textul tău suprapus exact ca în video */}
-          <div className="absolute inset-0 p-10 pt-32 text-center flex flex-col items-center">
-             <p className="font-lato text-[9px] tracking-[0.4em] uppercase text-gray-400 mb-6">Și astfel începe pentru totdeauna</p>
-             
-             {/* Numele Mirilor (Font Cursiv ca în video) */}
-             <h1 className="font-greatvibes text-5xl text-[#800020] mb-8">Diana & Ciprian</h1>
-
-             <div className="space-y-6 text-[10px] leading-relaxed text-gray-600 uppercase tracking-widest font-lato">
-                <p>Alături de mamele noastre<br/>și purtând în inimă pe cei care ne lipsesc,</p>
-                
-                <div className="flex justify-between items-start gap-4 pt-4 border-t border-gray-100">
-                    <div className="flex-1">
-                        <p className="font-playfair italic text-sm normal-case text-gray-800">Elena și Mugurel 🕊️</p>
-                        <p className="font-bold mt-1 text-[9px]">OLTEANU</p>
-                    </div>
-                    <div className="flex-1">
-                        <p className="font-playfair italic text-sm normal-case text-gray-800">Elena și Constantin 🕊️</p>
-                        <p className="font-bold mt-1 text-[9px]">ONODEA</p>
-                    </div>
+          {/* TEXTUL TĂU (Fonturi cursive și serif) */}
+          <div className="px-8 text-center mt-6 space-y-4">
+            <p className="uppercase tracking-[0.3em] text-[10px] text-gray-400">Și astfel începe pentru totdeauna</p>
+            <h1 className="text-5xl font-serif text-[#800020] py-4 italic">Diana & Ciprian</h1>
+            
+            <div className="text-[11px] leading-relaxed uppercase tracking-wider text-gray-600 border-t border-gray-100 pt-6">
+              <p>Alături de mamele noastre</p>
+              <p>Și purtând în inimă pe cei care ne lipsesc,</p>
+              
+              <div className="flex justify-between py-6 italic normal-case text-base text-gray-800 font-serif">
+                <div className="flex-1 border-r border-gray-100">
+                  Elena și Mugurel 🕊️ <br/> <span className="text-[9px] font-bold uppercase not-italic tracking-tighter">OLTEANU</span>
                 </div>
-
-                <div className="pt-6">
-                    <p className="text-[9px] mb-2">Și de nașii noștri dragi,</p>
-                    <p className="font-greatvibes text-2xl text-gray-800">Lavinia și Dănuț Marian</p>
+                <div className="flex-1">
+                  Elena și Constantin 🕊️ <br/> <span className="text-[9px] font-bold uppercase not-italic tracking-tighter">ONODEA</span>
                 </div>
-             </div>
+              </div>
 
-             {/* DATA (Font Serif ca în video) */}
-             <div className="absolute bottom-16 left-1/2 -translate-x-1/2">
-                <p className="font-playfair text-3xl text-[#800020] italic">19 Septembrie 2026</p>
-             </div>
+              <div className="py-4">
+                <p className="text-[10px] lowercase italic mb-1">Și de nașii noștri dragi,</p>
+                <p className="text-xl font-serif italic normal-case text-gray-900">Lavinia și Dănuț Marian</p>
+              </div>
+
+              <p className="pt-4 text-[10px]">Vă invităm să ne fiți alături la celebrarea căsătoriei noastre</p>
+            </div>
+
+            <div className="py-10 text-3xl font-serif text-[#800020] italic border-b border-gray-100">
+              19 Septembrie 2026
+            </div>
           </div>
+
+          {/* 4. ELEMENTELE GRAFICE (Florile care apar la scroll) */}
+          <motion.div 
+            style={{ opacity: flowersOpacity, scale: flowersScale }}
+            className="absolute -bottom-10 -right-10 w-64 h-64 z-50 pointer-events-none"
+          >
+            <img src="/orhidee.png" alt="Flori" className="w-full h-full object-contain" />
+            {/* ^ Aici pui imaginea cu orhideele mov din video */}
+          </motion.div>
         </div>
       </motion.div>
 
-      {/* --- SECȚIUNI EXTRA: FLORI ȘI PROGRAM (STIL VIDEO) --- */}
-      <div className="absolute top-[300vh] w-full pb-40 flex flex-col items-center px-8 space-y-32">
-          
-          <div className="text-center max-w-sm relative">
-            {/* Orhideele din Video (Suprapuse peste program) */}
-            <div className="absolute -left-20 top-0 z-0">
-               <img src="/flori_orchid.png" alt="Orhidee" className="h-60 w-auto opacity-80" />
+      {/* 5. PROGRAMUL (Timeline vertical ca în video) */}
+      <div className="absolute top-[350vh] w-full flex flex-col items-center px-10 space-y-20 pb-40">
+          <div className="w-full max-w-sm space-y-16 relative">
+            <div className="absolute left-4 top-0 bottom-0 w-[1px] bg-[#800020]/20" />
+            
+            <div className="relative pl-12">
+              <div className="absolute left-[11px] top-1 w-2 h-2 rounded-full bg-[#800020]" />
+              <p className="text-[10px] uppercase tracking-widest text-[#800020] font-bold">16:00 Cununia Civilă</p>
+              <p className="text-gray-500 text-sm italic font-serif">Casa Căsătoriilor, Mangalia</p>
             </div>
 
-            <div className="relative z-10 space-y-12">
-                <h2 className="font-serif text-3xl text-[#800020] italic">Program Eveniment</h2>
-                {/* Program Timeline... */}
+            <div className="relative pl-12">
+              <div className="absolute left-[11px] top-1 w-2 h-2 rounded-full bg-[#800020]" />
+              <p className="text-[10px] uppercase tracking-widest text-[#800020] font-bold">17:00 Cununia Religioasă</p>
+              <p className="text-gray-500 text-sm italic font-serif">Biserica "Sf. Gheorghe", Mangalia</p>
+            </div>
+
+            <div className="relative pl-12">
+              <div className="absolute left-[11px] top-1 w-2 h-2 rounded-full bg-[#800020]" />
+              <p className="text-[10px] uppercase tracking-widest text-[#800020] font-bold">19:30 Petrecerea</p>
+              <p className="text-gray-500 text-sm italic font-serif">Restaurant Atena, Saturn</p>
             </div>
           </div>
 
-          {/* RSVP Button, etc... */}
+          <div className="text-center space-y-6 pt-20">
+             <p className="font-serif text-2xl italic">Vă așteptăm cu drag!</p>
+             <button className="bg-[#800020] text-white px-10 py-4 text-[10px] tracking-[0.3em] uppercase">
+                Confirmă pe WhatsApp
+             </button>
+          </div>
       </div>
-
     </main>
   );
 }
