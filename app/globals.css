@@ -146,11 +146,30 @@ h1 span{
   z-index:20;
 
   margin-top:-10vh;
+
+  display:flex;
+  justify-content:center;
+
+  background:
+  linear-gradient(
+    to bottom,
+    #efe7de,
+    #f7f2ec
+  );
 }
 
 .invitation{
   width:100%;
+  max-width:430px;
+
   display:block;
+
+  margin:auto;
+
+  box-shadow:
+  0 20px 80px rgba(0,0,0,0.18);
+
+  border-radius:0 0 20px 20px;
 }
 
 /* COUNTDOWN */
@@ -161,9 +180,10 @@ h1 span{
   left:50%;
   transform:translateX(-50%);
 
-  bottom:11.5%;
+  bottom:11.3%;
 
-  width:90%;
+  width:430px;
+  max-width:100%;
 
   display:flex;
   justify-content:center;
@@ -234,6 +254,10 @@ h1 span{
 
 @media(max-width:480px){
 
+  .hero{
+    padding:20px;
+  }
+
   .envelope{
     width:280px;
     height:190px;
@@ -243,8 +267,20 @@ h1 span{
     font-size:48px;
   }
 
+  .date{
+    font-size:10px;
+  }
+
+  .invitation{
+    max-width:100%;
+    border-radius:0;
+  }
+
   .countdown{
-    gap:18px;
+    width:100%;
+
+    gap:16px;
+
     bottom:11%;
   }
 
@@ -254,6 +290,7 @@ h1 span{
 
   .countdown p{
     font-size:10px;
+    letter-spacing:2px;
   }
 
 }
