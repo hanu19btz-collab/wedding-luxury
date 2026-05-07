@@ -180,7 +180,7 @@ h1 span{
   left:50%;
   transform:translateX(-50%);
 
-  bottom:6.8%;
+  bottom:2.2%;
 
   width:100%;
   max-width:430px;
@@ -189,20 +189,20 @@ h1 span{
   justify-content:center;
   align-items:center;
 
-  gap:22px;
+  gap:18px;
 
   padding:0 20px;
 }
 
 .countdown div{
   text-align:center;
-  min-width:60px;
+  min-width:50px;
 }
 
 .countdown span{
   display:block;
 
-  font-size:30px;
+  font-size:22px;
   line-height:1;
 
   color:#7a1e2d;
@@ -213,11 +213,11 @@ h1 span{
 }
 
 .countdown p{
-  margin-top:8px;
+  margin-top:6px;
 
   color:#7a1e2d;
 
-  font-size:10px;
+  font-size:9px;
 
   letter-spacing:2px;
 }
@@ -287,20 +287,20 @@ h1 span{
   .countdown{
     width:100%;
 
-    gap:12px;
+    gap:10px;
 
-    bottom:6.6%;
+    bottom:2.1%;
 
-    padding:0 12px;
+    padding:0 8px;
   }
 
   .countdown span{
-    font-size:24px;
+    font-size:18px;
   }
 
   .countdown p{
-    font-size:10px;
-    letter-spacing:2px;
+    font-size:8px;
+    letter-spacing:1px;
   }
 
 }
