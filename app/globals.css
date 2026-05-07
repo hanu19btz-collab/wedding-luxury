@@ -1,71 +1,65 @@
-/* =========================
-   GLOBAL
-========================= */
+html{
+  scroll-behavior:smooth;
+}
 
-html,
 body{
   margin:0;
   padding:0;
+  background:#f6f1ea;
   overflow-x:hidden;
-  background:#f7f2ed;
-  font-family:sans-serif;
 }
 
-*{
-  box-sizing:border-box;
-}
+/* MAIN */
 
 .main{
-  background:#f7f2ed;
-  overflow-x:hidden;
+  width:100%;
+  overflow:hidden;
 }
 
-/* =========================
-   HERO SECTION
-========================= */
+/* HERO */
 
-.hero-section{
+.hero{
   height:100vh;
 
   display:flex;
   justify-content:center;
   align-items:center;
 
-  background:#f7f2ed;
+  background:
+  linear-gradient(
+    to bottom,
+    #f7f2ec,
+    #efe6dc
+  );
 
   position:sticky;
   top:0;
 
-  z-index:20;
+  z-index:10;
 }
 
-.envelope-wrapper{
-  perspective:1200px;
-}
-
-/* =========================
-   ENVELOPE
-========================= */
+/* ENVELOPE */
 
 .envelope{
-  width:300px;
-  height:210px;
+  width:320px;
+  height:220px;
 
-  background:#7d1d2a;
+  background:#7a1e2d;
 
   position:relative;
 
-  box-shadow:
-    0 20px 50px rgba(0,0,0,0.25);
+  border-radius:6px;
 
-  border-radius:4px;
+  box-shadow:
+  0 30px 80px rgba(0,0,0,0.25);
+
+  animation:
+  fadeEnvelope 4s ease forwards;
 }
 
-/* =========================
-   ENVELOPE LID
-========================= */
+/* LID */
 
-.envelope-lid{
+.lid{
   position:absolute;
 
   top:0;
@@ -74,9 +68,10 @@ body{
   width:100%;
   height:50%;
 
-  background:#962838;
+  background:#8f2637;
 
-  clip-path:polygon(
+  clip-path:
+  polygon(
     0 0,
     50% 100%,
     100% 0
@@ -85,14 +80,10 @@ body{
   transform-origin:top;
 
   animation:
-    openLid 2s ease forwards;
-
-  z-index:5;
+  openLid 2s ease forwards;
 }
 
-/* =========================
-   LETTER
-========================= */
+/* LETTER */
 
 .letter{
   position:absolute;
@@ -100,7 +91,7 @@ body{
   width:88%;
   height:88%;
 
-  background:white;
+  background:#fffdfb;
 
   left:6%;
   top:6%;
@@ -111,37 +102,99 @@ body{
   justify-content:center;
   align-items:center;
 
-  z-index:2;
-
   animation:
-    pullLetter 2.5s ease forwards;
+  pullLetter 2.5s ease forwards;
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,0.15);
+  0 10px 30px rgba(0,0,0,0.12);
 }
 
 .date{
-  letter-spacing:4px;
-  font-size:10px;
-  color:#8b7d73;
-  margin-bottom:20px;
+  font-size:12px;
+  letter-spacing:3px;
+  color:#7a1e2d;
+  margin-bottom:15px;
 }
 
 h1{
-  font-size:44px;
-  line-height:1;
+  margin:0;
 
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+
+  color:#7a1e2d;
+
+  font-size:58px;
+
+  font-family:serif;
+  font-style:italic;
+  font-weight:400;
+}
+
+h1 span{
+  font-size:34px;
+  margin:8px 0;
+}
+
+/* INVITATION */
+
+.invitation-wrapper{
+  position:relative;
+
+  z-index:20;
+
+  margin-top:-10vh;
+}
+
+.invitation{
+  width:100%;
+  display:block;
+}
+
+/* COUNTDOWN */
+
+.countdown{
+  position:absolute;
+
+  left:50%;
+  transform:translateX(-50%);
+
+  bottom:11.5%;
+
+  width:90%;
+
+  display:flex;
+  justify-content:center;
+
+  gap:28px;
+}
+
+.countdown div{
   text-align:center;
+}
 
-  color:#5b1621;
+.countdown span{
+  font-size:52px;
+
+  color:#7a1e2d;
 
   font-family:serif;
   font-style:italic;
 }
 
-/* =========================
-   ANIMATIONS
-========================= */
+.countdown p{
+  margin-top:8px;
+
+  color:#7a1e2d;
+
+  font-size:12px;
+
+  letter-spacing:3px;
+}
+
+/* ANIMATIONS */
 
 @keyframes openLid{
 
@@ -153,129 +206,54 @@ h1{
 
 @keyframes pullLetter{
 
-  0%{
-    transform:translateY(0);
-  }
-
-  100%{
+  to{
     transform:translateY(-100px);
   }
 
 }
 
-/* =========================
-   IMAGE SECTIONS
-========================= */
+@keyframes fadeEnvelope{
 
-.image-section{
-  display:flex;
-  justify-content:center;
+  0%{
+    opacity:1;
+    transform:scale(1);
+  }
 
-  background:#f7f2ed;
+  70%{
+    opacity:1;
+  }
 
-  position:relative;
-  z-index:5;
+  100%{
+    opacity:0;
+    transform:scale(1.1);
+  }
+
 }
 
-.image-section img{
-  width:100%;
-  max-width:430px;
-
-  height:auto;
-
-  display:block;
-}
-
-/* =========================
-   COUNTDOWN
-========================= */
-
-.countdown-wrapper{
-  position:relative;
-
-  display:flex;
-  justify-content:center;
-
-  background:#f7f2ed;
-}
-
-.countdown-image{
-  width:100%;
-  max-width:430px;
-
-  display:block;
-}
-
-.countdown-overlay{
-  position:absolute;
-
-  top:36%;
-  left:50%;
-
-  transform:translateX(-50%);
-
-  width:100%;
-}
-
-/* =========================
-   TIMER
-========================= */
-
-.timer{
-  display:flex;
-  justify-content:center;
-
-  gap:10px;
-}
-
-.timer div{
-  text-align:center;
-}
-
-.timer span{
-  font-size:34px;
-
-  color:#651421;
-
-  font-family:serif;
-  font-style:italic;
-}
-
-.timer p{
-  margin-top:8px;
-
-  font-size:10px;
-
-  letter-spacing:2px;
-
-  color:#8d7a6f;
-}
-
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:480px){
 
   .envelope{
-    width:270px;
+    width:280px;
     height:190px;
   }
 
   h1{
-    font-size:38px;
+    font-size:48px;
   }
 
-  .timer{
-    gap:8px;
+  .countdown{
+    gap:18px;
+    bottom:11%;
   }
 
-  .timer span{
-    font-size:28px;
+  .countdown span{
+    font-size:34px;
   }
 
-  .timer p{
-    font-size:9px;
+  .countdown p{
+    font-size:10px;
   }
 
 }
